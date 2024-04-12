@@ -5,6 +5,7 @@ name = "${{ script_name }}"
 type = "javascript"
 account_id = "${{ account_id }}"
 workers_dev = true
+main = "_worker.js"  # 这里设置为你的脚本文件名
 
 [env.production]
 zone_id = "${{ zone_id }}"
