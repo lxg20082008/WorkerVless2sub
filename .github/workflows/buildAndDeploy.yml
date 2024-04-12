@@ -1,7 +1,5 @@
 name: buildAndDeployWorker
 on: push
-  schedule:
-    - cron: '00 5 * * 1,3,5,0' # 每天的上午5点0分触发
 jobs:
   deploy:
     runs-on: ubuntu-latest
