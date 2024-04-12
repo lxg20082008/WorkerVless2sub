@@ -1,0 +1,11 @@
+[env]
+API_URL = "${{ secrets.CF_API_TOKEN }}"
+
+name = "${{ script_name }}"
+type = "javascript"
+account_id = "${{ account_id }}"
+workers_dev = true
+
+[env.production]
+zone_id = "${{ zone_id }}"
+route = "52601312.workers.dev/*"
