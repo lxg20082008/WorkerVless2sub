@@ -1,5 +1,5 @@
 [env]
-API_URL = "${{ secrets.CF_API_TOKEN }}"
+API_URL = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
 
 name = "${{ script_name }}"
 type = "javascript"
