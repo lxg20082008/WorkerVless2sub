@@ -1,0 +1,14 @@
+name: buildAndDeployWorker
+on:
+  schedule:
+    - cron: '0 5 * * 1,3,5,7'  # 每周一、周三、周五和周日的上午5点触发
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish
+        uses: cloudflare/wrangler-action@1.3.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
