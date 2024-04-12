@@ -1,6 +1,6 @@
 name: buildAndDeployWorker
 on:
-  push
+  push:
   schedule:
     - cron: '0 5 * * 1,3,5,7'  # 每周一、周三、周五和周日的上午5点触发
 jobs:
