@@ -3,7 +3,7 @@ on:
   push:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '30 5,17 * * *'  # 每周一、周三、周五和周日的上午5点触发
+    - cron:  '00 5,17 * * *'  # 每周一、周三、周五和周日的上午5点触发
 jobs:
   deploy:
     runs-on: ubuntu-latest
