@@ -16,9 +16,18 @@ jobs:
       - name: Set Compatibility Date
         id: set_date
         run: echo "::set-output name=date::$(date +%Y-%m-%d)"
+      - name: Replace Secrets in wrangler.toml
+        run: |
+          sed -i 's|${{ secrets.UUID }}|'"$(echo ${{ secrets.UUID }})"'|g' wrangler.toml
+          sed -i 's|${{ secrets.PATH }}|'"$(echo ${{ secrets.PATH }})"'|g' wrangler.toml
+          sed -i 's|${{ secrets.HOST }}|'"$(echo ${{ secrets.HOST }})"'|g' wrangler.toml
+          sed -i 's|${{ secrets.TOKEN }}|'"$(echo ${{ secrets.TOKEN }})"'|g' wrangler.toml
+          sed -i 's|${{ secrets.ADDAPI }}|'"$(echo ${{ secrets.ADDAPI }})"'|g' wrangler.toml
+          sed -i 's|${{ secrets.ADDCSV }}|'"$(echo ${{ secrets.ADDCSV }})"'|g' wrangler.toml
+          sed -i 's|${{ secrets.ADD }}|'"$(echo ${{ secrets.ADD }})"'|g' wrangler.toml
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date ${{ steps.set_date.outputs.date }} --name ${{ secrets.script_name }}
+          command: deploy _worker.js --compatibility-date ${{ steps.set_date.outputs.date }} --name ${{ secrets.SCRIPT_NAME }}
