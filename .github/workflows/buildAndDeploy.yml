@@ -25,19 +25,6 @@ jobs:
           echo "ADDCSV=${{ env.ADDCSV }}" >> $GITHUB_ENV
           echo "ADD=${{ env.ADD }}" >> $GITHUB_ENV
 
-      - name: Use Wrangler with Environment Variables
-        run: |
-          npx wrangler deploy _worker.js \
-            --compatibility-date "${{ steps.set_date.outputs.date }}" \
-            --name "${{ secrets.SCRIPT_NAME }}" \
-            --var UUID="${{ secrets.UUID }}" \
-            --var PATH="${{ secrets.PATH }}" \
-            --var HOST="${{ secrets.HOST }}" \
-            --var TOKEN="${{ secrets.TOKEN }}" \
-            --var ADDAPI="${{ env.ADDAPI }}" \
-            --var ADDCSV="${{ env.ADDCSV }}" \
-            --var ADD="${{ env.ADD }}"
-
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
