@@ -2,7 +2,7 @@
 API_URL = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
 compatibility_date = "2024-04-13"
 
-name = "${{ secrets.SCRIPT_NAME }}"
+name = "dingyueqi"
 type = "javascript"
 account_id = "${{ secrets.ACCOUNT_ID }}"
 workers_dev = true
