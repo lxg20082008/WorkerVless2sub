@@ -21,12 +21,22 @@ jobs:
 
       - name: Process multi-line secrets
         run: |
-          ADDAPI=$(echo "${{ secrets.ADDAPI }}" | tr '\n' '\\n')
-          ADDCSV=$(echo "${{ secrets.ADDCSV }}" | tr '\n' '\\n')
-          ADD=$(echo "${{ secrets.ADD }}" | tr '\n' '\\n')
-          echo "::set-env name=ADDAPI::$ADDAPI"
-          echo "::set-env name=ADDCSV::$ADDCSV"
-          echo "::set-env name=ADD::$ADD"
+          echo "ADDAPI=${{ env.ADDAPI }}" >> $GITHUB_ENV
+          echo "ADDCSV=${{ env.ADDCSV }}" >> $GITHUB_ENV
+          echo "ADD=${{ env.ADD }}" >> $GITHUB_ENV
+
+      - name: Use Wrangler with Environment Variables
+        run: |
+          npx wrangler deploy _worker.js \
+            --compatibility-date "${{ steps.set_date.outputs.date }}" \
+            --name "${{ secrets.SCRIPT_NAME }}" \
+            --var UUID="${{ secrets.UUID }}" \
+            --var PATH="${{ secrets.PATH }}" \
+            --var HOST="${{ secrets.HOST }}" \
+            --var TOKEN="${{ secrets.TOKEN }}" \
+            --var ADDAPI="${{ env.ADDAPI }}" \
+            --var ADDCSV="${{ env.ADDCSV }}" \
+            --var ADD="${{ env.ADD }}"
 
       - name: Deploy using Wrangler
         run: npx wrangler deploy _worker.js \
