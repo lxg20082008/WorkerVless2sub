@@ -10,11 +10,11 @@ workers_dev = true
 zone_id = "${{ secrets.ZONE_ID }}"
 route = "${{ secrets.ROUTE }}"
 
-[vars]
-UUID = "${{ secrets.UUID }}"
-PATH = "${{ secrets.PATH }}"
-HOST = "${{ secrets.HOST }}"
-TOKEN = "${{ secrets.TOKEN }}"
-ADDAPI = "${{ secrets.ADDAPI }}"
-ADDCSV = "${{ secrets.ADDCSV }}"
-ADD = "${{ secrets.ADD }}"
+# [vars]
+# UUID = "${{ secrets.UUID }
+# PATH = "${{ secrets.PATH }
+# HOST = "${{ secrets.HOST }
+# TOKEN = "${{ secrets.TOKEN
+# ADDAPI = "${{ secrets.ADDA
+# ADDCSV = "${{ secrets.ADDC
+# ADD = "${{ secrets.ADD }}"
