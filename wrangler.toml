@@ -1,5 +1,6 @@
 [env]
 API_URL = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+main = "_worker.js"
 
 name = "${{ secrets.SCRIPT_NAME }}"
 type = "javascript"
