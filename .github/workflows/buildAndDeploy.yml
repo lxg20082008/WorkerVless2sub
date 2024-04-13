@@ -29,9 +29,8 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           environment: ${{ github.events.inputs.environment }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ env.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
+          command: deploy _worker.js --compatibility-date 2024-04-13 # --name ${{ env.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
           secrets: |
-            SCRIPT_NAME
             UUID
 
             HOST
@@ -40,7 +39,6 @@ jobs:
             ADDCSV
             ADD
         env:
-          SCRIPT_NAME: ${{ secrets.SCRIPT_NAME }}
           UUID: ${{ secrets.UUID }}
 
           HOST: ${{ secrets.HOST }}
