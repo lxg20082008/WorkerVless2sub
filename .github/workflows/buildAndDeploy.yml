@@ -32,7 +32,7 @@ jobs:
           command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} # --compatibility-date ${{ steps.set_date.outputs.date }}
           secrets: |
             UUID
-            PATH
+
             HOST
             TOKEN
             ADDAPI
@@ -40,7 +40,7 @@ jobs:
             ADD
         env:
           UUID: ${{ secrets.UUID }}
-          PATH: ${{ secrets.PATH }}
+
           HOST: ${{ secrets.HOST }}
           TOKEN: ${{ secrets.TOKEN }}
           ADDAPI: ${{ secrets.ADDAPI }}
