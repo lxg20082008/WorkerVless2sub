@@ -12,23 +12,35 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Set Compatibility Date
         id: set_date
         run: echo "::set-output name=date::$(date +%Y-%m-%d)"
-      - name: Deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: .
-          command: >
-            deploy _worker.js
-            --compatibility-date ${{ steps.set_date.outputs.date }}
-            --name ${{ secrets.SCRIPT_NAME }}
-            --var UUID="${{ secrets.UUID }}"
-            --var PATH="${{ secrets.PATH }}"
-            --var HOST="${{ secrets.HOST }}"
-            --var TOKEN="${{ secrets.TOKEN }}"
-            --var ADDAPI="${{ secrets.ADDAPI | replace('\n', '\\n') }}"
-            --var ADDCSV="${{ secrets.ADDCSV | replace('\n', '\\n') }}"
-            --var ADD="${{ secrets.ADD | replace('\n', '\\n') }}"
+
+      - name: Process multi-line secrets
+        run: |
+          ADDAPI=$(echo "${{ secrets.ADDAPI }}" | tr '\n' '\\n')
+          ADDCSV=$(echo "${{ secrets.ADDCSV }}" | tr '\n' '\\n')
+          ADD=$(echo "${{ secrets.ADD }}" | tr '\n' '\\n')
+          echo "::set-env name=ADDAPI::$ADDAPI"
+          echo "::set-env name=ADDCSV::$ADDCSV"
+          echo "::set-env name=ADD::$ADD"
+
+      - name: Deploy using Wrangler
+        run: npx wrangler deploy _worker.js \
+             --compatibility-date "${{ steps.set_date.outputs.date }}" \
+             --name "${{ secrets.SCRIPT_NAME }}" \
+             --var UUID="${{ secrets.UUID }}" \
+             --var PATH="${{ secrets.PATH }}" \
+             --var HOST="${{ secrets.HOST }}" \
+             --var TOKEN="${{ secrets.TOKEN }}" \
+             --var ADDAPI="${{ env.ADDAPI }}" \
+             --var ADDCSV="${{ env.ADDCSV }}" \
+             --var ADD="${{ env.ADD }}"
+
+        env:
+          ADDAPI: ${{ secrets.ADDAPI }}
+          ADDCSV: ${{ secrets.ADDCSV }}
+          ADD: ${{ secrets.ADD }}
