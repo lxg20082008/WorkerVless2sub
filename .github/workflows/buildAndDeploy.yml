@@ -5,11 +5,11 @@ on:
     branches:
       - lxg20082008-patch-1
   workflow_dispatch: # 手动触发
-    inputs:
-      branch:
-        description: 'Branch name'
-        required: true
-        default: 'lxg20082008-patch-1' # 默认分支
+    # inputs:
+    #   branch:
+    #     description: 'Branch name'
+    #     required: true
+    #     default: 'lxg20082008-patch-1' # 默认分支
   schedule:
     - cron: "0 05 * * 1,3,5,0" #At 05:00 on Monday, Wednesday, Friday, and Sunday.
 
