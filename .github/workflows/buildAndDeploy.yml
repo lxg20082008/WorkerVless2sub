@@ -27,22 +27,5 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          environment: ${{ github.events.inputs.environment }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name dingyueqi # --compatibility-date ${{ steps.set_date.outputs.date }}
-          secrets: |
-            UUID
-
-            HOST
-            TOKEN
-            ADDAPI
-            ADDCSV
-            ADD
-        env:
-          UUID: ${{ secrets.UUID }}
-
-          HOST: ${{ secrets.HOST }}
-          TOKEN: ${{ secrets.TOKEN }}
-          ADDAPI: ${{ secrets.ADDAPI }}
-          ADDCSV: ${{ secrets.ADDCSV }}
-          ADD: ${{ secrets.ADD }}
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} # --compatibility-date ${{ steps.set_date.outputs.date }}
