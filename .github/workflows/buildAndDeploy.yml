@@ -20,20 +20,32 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
-      # - name: Set Compatibility Date
-      #   id: set_date
-      #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      # # Debugging step to print out the environment variables
-      # - name: Debug Environment Variables
-      #   run: |
-      #     echo "ADDAPI: $ADDAPI"
-      #     echo "ADDCSV: $ADDCSV"
-      #     echo "ADD: $ADD"
+      # 解决secrets多行文本的问题
+      - name: Set ADDAPI output
+        id: set_ADDAPI
+        run: |
+          echo 'ADDAPI<<EOF' >> $GITHUB_ENV
+          echo "${{ secrets.ADDAPI }}" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Set ADDCSV output
+        id: set_ADDCSV
+        run: |
+          echo 'ADDCSV<<EOF' >> $GITHUB_ENV
+          echo "${{ secrets.ADDCSV }}" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Set ADD output
+        id: set_ADD
+        run: |
+          echo 'ADD<<EOF' >> $GITHUB_ENV
+          echo "${{ secrets.ADD }}" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI:"${{ secrets.ADDAPI }}" ADDCSV:"${{ secrets.ADDCSV }}" ADD:"${{ secrets.ADD }}" # --compatibility-date ${{ steps.set_date.outputs.date }}
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI:"${{ env.ADDAPI }}" ADDCSV:"${{ env.ADDCSV }}" ADD:"${{ env.ADD }}" # --compatibility-date ${{ steps.set_date.outputs.date }}
