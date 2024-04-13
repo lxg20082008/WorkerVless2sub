@@ -38,8 +38,12 @@ jobs:
             --var ADDCSV="${{ env.ADDCSV }}" \
             --var ADD="${{ env.ADD }}"
 
-      - name: Deploy using Wrangler
-        run: npx wrangler deploy _worker.js \
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: .
+          command: deploy _worker.js \
              --compatibility-date "${{ steps.set_date.outputs.date }}" \
              --name "${{ secrets.SCRIPT_NAME }}" \
              --var UUID="${{ secrets.UUID }}" \
