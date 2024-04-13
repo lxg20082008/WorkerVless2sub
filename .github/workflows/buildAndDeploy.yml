@@ -61,4 +61,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI:"${{ env.ADDAPI }}" ADDCSV:"${{ env.ADDCSV }}" ADD:"${{ env.ADD }}" # --compatibility-date ${{ steps.set_date.outputs.date }}
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI:"${{ secrets.ADDAPI }}" ADDCSV:"${{ secrets.ADDCSV }}" ADD:"${{ secrets.ADD }}" # --compatibility-date ${{ steps.set_date.outputs.date }}
