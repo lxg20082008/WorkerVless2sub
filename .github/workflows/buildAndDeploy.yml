@@ -13,12 +13,28 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
-      - name: Set Compatibility Date
-        id: set_date
-        run: echo "::set-output name=date::$(date +%Y-%m-%d)"
+      # - name: Set Compatibility Date
+      #   id: set_date
+      #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
+
+      - name: Process multi-line secrets
+        run: |
+          echo "UUID=${{ env.UUID }}" >> $GITHUB_ENV
+          echo "PATH=${{ env.PATH }}" >> $GITHUB_ENV
+          echo "HOST=${{ env.HOST }}" >> $GITHUB_ENV
+          echo "TOKEN=${{ env.TOKEN }}" >> $GITHUB_ENV
+          echo "ADDAPI=${{ env.ADDAPI }}" >> $GITHUB_ENV
+          echo "ADDCSV=${{ env.ADDCSV }}" >> $GITHUB_ENV
+          echo "ADD=${{ env.ADD }}" >> $GITHUB_ENV
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date ${{ steps.set_date.outputs.date }} --name ${{ secrets.script_name }}
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} # --compatibility-date ${{ steps.set_date.outputs.date }} 
+        env:
+
+          ADDAPI: ${{ secrets.ADDAPI }}
+          ADDCSV: ${{ secrets.ADDCSV }}
+          ADD: ${{ secrets.ADD }}
