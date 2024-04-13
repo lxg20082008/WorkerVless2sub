@@ -1,12 +1,20 @@
 [env]
 API_URL = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
 
-name = "${{ script_name }}"
+name = "${{ secrets.SCRIPT_NAME }}"
 type = "javascript"
-account_id = "${{ account_id }}"
+account_id = "${{ secrets.ACCOUNT_ID }}"
 workers_dev = true
-main = "_worker.js"  # 这里设置为你的脚本文件名
 
 [env.production]
-zone_id = "${{ zone_id }}"
-route = "52601312.workers.dev/*"
+zone_id = "${{ secrets.ZONE_ID }}"
+route = "${{ secrets.route }}"
+
+[vars]
+UUID = "${{ secrets.UUID }}"
+PATH = "${{ secrets.PATH }}"
+HOST = "${{ secrets.HOST }}"
+TOKEN = "${{ secrets.TOKEN }}"
+ADDAPI = "${{ secrets.ADDAPI }}"
+ADDCSV = "${{ secrets.ADDCSV }}"
+ADD = "${{ secrets.ADD }}"
