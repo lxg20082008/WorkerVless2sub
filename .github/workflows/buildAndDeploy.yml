@@ -33,8 +33,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
           command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} # --compatibility-date ${{ steps.set_date.outputs.date }} 
-        env:
 
-          ADDAPI: ${{ secrets.ADDAPI }}
-          ADDCSV: ${{ secrets.ADDCSV }}
-          ADD: ${{ secrets.ADD }}
