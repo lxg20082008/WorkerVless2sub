@@ -1,4 +1,5 @@
 name: buildAndDeployWorker
+
 on:
   push:
     branches:
@@ -12,11 +13,12 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
+      - name: Set Compatibility Date
+        id: set_date
+        run: echo "::set-output name=date::$(date +%Y-%m-%d)"
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js
-
-
+          command: deploy _worker.js --compatibility-date ${{ steps.set_date.outputs.date }}
