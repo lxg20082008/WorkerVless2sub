@@ -11,10 +11,10 @@ zone_id = "${{ secrets.ZONE_ID }}"
 route = "${{ secrets.ROUTE }}"
 
 [vars]
-UUID = ${{ secrets.UUID }}
-PATH = ${{ secrets.PATH }}
-HOST = ${{ secrets.HOST }}
-TOKEN = ${{ secrets.TOKEN }}
-ADDAPI = ${{ secrets.ADDAPI }}
-ADDCSV = ${{ secrets.ADDCSV }}
-ADD = ${{ secrets.ADD }}"
+UUID = "${{ secrets.UUID }}"
+PATH = "${{ secrets.PATH }}"
+HOST = "${{ secrets.HOST }}"
+TOKEN = "${{ secrets.TOKEN }}"
+ADDAPI = "${{ secrets.ADDAPI }}"
+ADDCSV = "${{ secrets.ADDCSV }}"
+ADD = "${{ secrets.ADD }}"
