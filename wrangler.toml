@@ -9,7 +9,7 @@ workers_dev = true
 
 [env.production]
 zone_id = "${{ secrets.ZONE_ID }}"
-route = "${{ secrets.route }}"
+route = "${{ secrets.ROUTE }}"
 
 [vars]
 UUID = "${{ secrets.UUID }}"
