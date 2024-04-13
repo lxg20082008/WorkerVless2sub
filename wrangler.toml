@@ -1,6 +1,5 @@
 [env]
 API_URL = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
-main = "_worker.js"
 
 name = "${{ secrets.SCRIPT_NAME }}"
 type = "javascript"
@@ -12,10 +11,10 @@ zone_id = "${{ secrets.ZONE_ID }}"
 route = "${{ secrets.ROUTE }}"
 
 [vars]
-UUID = "${{ secrets.UUID }}"
-PATH = "${{ secrets.PATH }}"
-HOST = "${{ secrets.HOST }}"
-TOKEN = "${{ secrets.TOKEN }}"
-ADDAPI = "${{ secrets.ADDAPI }}"
-ADDCSV = "${{ secrets.ADDCSV }}"
-ADD = "${{ secrets.ADD }}"
+UUID = ${{ secrets.UUID }}
+PATH = ${{ secrets.PATH }}
+HOST = ${{ secrets.HOST }}
+TOKEN = ${{ secrets.TOKEN }}
+ADDAPI = ${{ secrets.ADDAPI }}
+ADDCSV = ${{ secrets.ADDCSV }}
+ADD = ${{ secrets.ADD }}"
