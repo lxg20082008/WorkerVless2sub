@@ -1,5 +1,6 @@
 [env]
 API_URL = "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+compatibility_date = "2024-04-13"
 
 name = "${{ secrets.SCRIPT_NAME }}"
 type = "javascript"
