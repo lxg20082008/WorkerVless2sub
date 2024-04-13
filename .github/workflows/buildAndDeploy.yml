@@ -16,7 +16,15 @@ jobs:
       # - name: Set Compatibility Date
       #   id: set_date
       #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
-
+      - name: Process multi-line secrets
+        run: |
+          echo "UUID=${{ env.UUID }}" >> $GITHUB_ENV
+          echo "PATH=${{ env.PATH }}" >> $GITHUB_ENV
+          echo "HOST=${{ env.HOST }}" >> $GITHUB_ENV
+          echo "TOKEN=${{ env.TOKEN }}" >> $GITHUB_ENV
+          echo "ADDAPI=${{ env.ADDAPI }}" >> $GITHUB_ENV
+          echo "ADDCSV=${{ env.ADDCSV }}" >> $GITHUB_ENV
+          echo "ADD=${{ env.ADD }}" >> $GITHUB_ENV
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
