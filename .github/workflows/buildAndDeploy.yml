@@ -23,16 +23,16 @@ jobs:
       #   id: set_date
       #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      # Debugging step to print out the environment variables
-      - name: Debug Environment Variables
-        run: |
-          echo "ADDAPI: $ADDAPI"
-          echo "ADDCSV: $ADDCSV"
-          echo "ADD: $ADD"
+      # # Debugging step to print out the environment variables
+      # - name: Debug Environment Variables
+      #   run: |
+      #     echo "ADDAPI: $ADDAPI"
+      #     echo "ADDCSV: $ADDCSV"
+      #     echo "ADD: $ADD"
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI:"$ADDAPI" ADDCSV:"$ADDCSV" ADD:"$ADD" # --compatibility-date ${{ steps.set_date.outputs.date }}
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.script_name }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI:"${{ env.ADDAPI }}" ADDCSV:"${{ env.ADDCSV }}" ADD:"${{ env.ADD }}" # --compatibility-date ${{ steps.set_date.outputs.date }}
