@@ -7,6 +7,14 @@ type = "javascript"
 account_id = "${{ secrets.ACCOUNT_ID }}"
 workers_dev = true
 
+UUID = env.UUID
+PATH = env.PATH
+HOST = env.HOST
+TOKEN = env.TOKEN
+ADDAPI = env.ADDAPI
+ADDCSV = env.ADDCSV
+ADD = env.ADD
+
 [env.production]
 zone_id = "${{ secrets.ZONE_ID }}"
 route = "${{ secrets.ROUTE }}"
