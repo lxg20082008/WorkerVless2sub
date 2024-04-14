@@ -25,8 +25,7 @@ jobs:
         run: |
           # Install Python dependencies using apt
           apt update && apt install -y python3-re
-          cache:
-            path: null  # Disable caching for this step
+
           # Define the Python script content (place this within the heredoc)
           <<EOF > preprocess.py
           import os
@@ -68,3 +67,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
           command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
+    cache: null  # Disable caching for the entire job
