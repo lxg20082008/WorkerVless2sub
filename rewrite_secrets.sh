@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create a temporary TOML file
-temp_toml_file=$(mktemp -t wrangler-temp.toml)
+temp_toml_file=$(mktemp --template="wrangler-temp-XXXXXX.toml")
 
 # Read the original wrangler.toml file
 original_toml_content=$(cat wrangler.toml)
