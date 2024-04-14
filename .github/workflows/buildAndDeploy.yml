@@ -22,6 +22,16 @@ jobs:
       #   id: set_date
       #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
+      - name: Set secrets in wrangler.toml
+        run: |
+          sed -i "s/\${{ secrets.UUID }}/${{ secrets.UUID }}/g" wrangler.toml
+          sed -i "s/\${{ secrets.PATH }}/${{ secrets.PATH }}/g" wrangler.toml
+          sed -i "s/\${{ secrets.HOST }}/${{ secrets.HOST }}/g" wrangler.toml
+          sed -i "s/\${{ secrets.TOKEN }}/${{ secrets.TOKEN }}/g" wrangler.toml
+          sed -i "s/\${{ secrets.ADDAPI }}/${{ secrets.ADDAPI }}/g" wrangler.toml
+          sed -i "s/\${{ secrets.ADDCSV }}/${{ secrets.ADDCSV }}/g" wrangler.toml
+          sed -i "s/\${{ secrets.ADD }}/${{ secrets.ADD }}/g" wrangler.toml
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
