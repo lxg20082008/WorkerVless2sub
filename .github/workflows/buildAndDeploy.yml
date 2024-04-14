@@ -1,17 +1,16 @@
 name: buildAndDeployWorker
-
 on:
   push:
     branches:
       - lxg20082008-patch-1
   schedule:
-    - cron: "0 05 * * 1,3,5,0"  # At 05:00 on Monday, Wednesday, Friday, and Sunday.
-  workflow_dispatch:  # Manual Trigger
+    - cron: "0 05 * * 1,3,5,0" #At 05:00 on Monday, Wednesday, Friday, and Sunday.
+  workflow_dispatch: # 手动触发
     inputs:
       branch:
         description: 'Branch name'
         required: true
-        default: 'lxg20082008-patch-1'  # Default branch
+        default: 'lxg20082008-patch-1' # 默认分支
 
 jobs:
   deploy:
@@ -25,6 +24,7 @@ jobs:
           chmod +x rewrite_secrets.sh
 
       - name: Rewrite Secrets
+        uses: actions/shell@v3
         run: |
           bash rewrite_secrets.sh
 
@@ -33,4 +33,10 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }}
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
+
+      - name: Remove Temporary File
+        run: |
+          # Define the temporary file path based on your script's logic (replace with actual logic)
+          temp_toml_file=$(mktemp -t wrangler-temp.XXXXXX.toml)
+          rm "$temp_toml_file"
