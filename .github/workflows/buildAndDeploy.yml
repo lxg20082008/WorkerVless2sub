@@ -1,17 +1,16 @@
 name: buildAndDeployWorker
-
 on:
   push:
     branches:
       - lxg20082008-patch-1
   schedule:
-    - cron: "0 5 * * 1,3,5,0" # At 05:00 on Monday, Wednesday, Friday, and Sunday.
-  workflow_dispatch: # Manual trigger
+    - cron: "0 05 * * 1,3,5,0" #At 05:00 on Monday, Wednesday, Friday, and Sunday.
+  workflow_dispatch: # 手动触发
     inputs:
       branch:
         description: 'Branch name'
         required: true
-        default: 'lxg20082008-patch-1' # Default branch
+        default: 'lxg20082008-patch-1' # 默认分支
 
 jobs:
   deploy:
@@ -19,35 +18,15 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
-
-      - name: Retrieve and Convert Secrets
+      - name: Rewrite Secrets
         run: |
-          # Retrieve secrets from GitHub secrets
-          UUID=$(echo "${{ secrets.UUID }}" | sed 's/[[:punct:]\s]/\\&/g')
-          PATH=$(echo "${{ secrets.PATH }}" | sed 's/[[:punct:]\s]/\\&/g')
-          HOST=$(echo "${{ secrets.HOST }}" | sed 's/[[:punct:]\s]/\\&/g')
-          TOKEN=$(echo "${{ secrets.TOKEN }}" | sed 's/[[:punct:]\s]/\\&/g')
-          ADDAPI=$(echo "${{ secrets.ADDAPI }}" | sed 's/[[:punct:]\s]/\\&/g')
-          ADDCSV=$(echo "${{ secrets.ADDCSV }}" | sed 's/[[:punct:]\s]/\\&/g')
-          ADD=$(echo "${{ secrets.ADD }}" | sed 's/[[:punct:]\s]/\\&/g')
+          bash rewrite_secrets.sh
+          # Optional: Verify modified wrangler.toml file
+          # cat wrangler.toml
 
-          # Convert multiline secrets to JSON
-          secrets_json=$(jq -n '{
-            "UUID": "${UUID}",
-            "PATH": "${PATH}",
-            "HOST": "${HOST}",
-            "TOKEN": "${TOKEN}",
-            "ADDAPI": "${ADDAPI}",
-            "ADDCSV": "${ADDCSV}",
-            "ADD": "${ADD}"
-          }')
-
-      - name: Deploy Worker
+      - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: .  # Use the current working directory
+          workingDirectory: .
           command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
-
-      - env:  # Define environment variables with converted JSON
-          SECRETS_JSON: ${{ secrets_json }}
