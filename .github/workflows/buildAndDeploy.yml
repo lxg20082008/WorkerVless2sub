@@ -32,6 +32,16 @@ jobs:
           temp_toml_file=$(mktemp -t wrangler-temp.XXXXXX.toml)
           echo "temp_toml_file=$temp_toml_file" >> $GITHUB_ENV  # Add to environment
 
+      - name: Define temp_toml_file Environment Variable
+        run: |
+          temp_toml_file=$(mktemp -t wrangler-temp.XXXXXX.toml)
+          echo "[vars]" >> "$temp_toml_file"  # Add header for clarity
+          echo "MY_VAR = \"my_test_value\"" >> "$temp_toml_file"  # Add sample variable
+          echo "ANOTHER_VAR = \"another_test_value\"" >> "$temp_toml_file"  # Add another sample variable
+          echo "temp_toml_file content:"
+          cat "$temp_toml_file"  # Print the file contents
+          echo "env.temp_toml_file=$temp_toml_file" >> $GITHUB_ENV  # Add to environment
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
