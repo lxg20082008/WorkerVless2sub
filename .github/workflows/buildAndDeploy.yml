@@ -22,9 +22,7 @@ jobs:
 
       - name: Set Secrets
         run: |
-          if [[ -z "${{ secrets.UUID }}" ]]; then
-            # Do nothing (since the secret is empty)
-          else
+          if [[ -n "${{ secrets.UUID }}" ]]; then
             echo "UUID=\"${{ secrets.UUID }}\" >> wrangler.toml"
           fi
 
