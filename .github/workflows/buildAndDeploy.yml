@@ -24,7 +24,6 @@ jobs:
           chmod +x rewrite_secrets.sh
 
       - name: Rewrite Secrets
-        uses: actions/shell@v3
         run: |
           bash rewrite_secrets.sh
 
