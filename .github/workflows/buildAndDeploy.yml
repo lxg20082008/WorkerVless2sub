@@ -31,13 +31,13 @@ jobs:
               -v ADDAPI="${{ secrets.ADDAPI }}" \
               -v ADDCSV="${{ secrets.ADDCSV }}" \
               -v ADD="${{ secrets.ADD }}" \
-              '{ gsub(/\${{ secrets.UUID }}/, UUID); \
-                 gsub(/\${{ secrets.PATH }}/, PATH); \
-                 gsub(/\${{ secrets.HOST }}/, HOST); \
-                 gsub(/\${{ secrets.TOKEN }}/, TOKEN); \
-                 gsub(/\${{ secrets.ADDAPI }}/, ADDAPI); \
-                 gsub(/\${{ secrets.ADDCSV }}/, ADDCSV); \
-                 gsub(/\${{ secrets.ADD }}/, ADD); \
+              '{ gsub(/\$\$\{secrets.UUID\}/, UUID); \
+                 gsub(/\$\$\{secrets.PATH\}/, PATH); \
+                 gsub(/\$\$\{secrets.HOST\}/, HOST); \
+                 gsub(/\$\$\{secrets.TOKEN\}/, TOKEN); \
+                 gsub(/\$\$\{secrets.ADDAPI\}/, ADDAPI); \
+                 gsub(/\$\$\{secrets.ADDCSV\}/, ADDCSV); \
+                 gsub(/\$\$\{secrets.ADD\}/, ADD); \
                  print }' wrangler.toml > wrangler.tmp && mv wrangler.tmp wrangler.toml
 
       - name: Deploy
