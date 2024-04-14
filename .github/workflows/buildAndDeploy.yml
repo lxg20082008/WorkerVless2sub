@@ -24,13 +24,21 @@ jobs:
 
       - name: Set secrets in wrangler.toml
         run: |
-          sed -i "s/\${{ secrets.UUID }}/${{ secrets.UUID }}/g" wrangler.toml
-          sed -i "s/\${{ secrets.PATH }}/${{ secrets.PATH }}/g" wrangler.toml
-          sed -i "s/\${{ secrets.HOST }}/${{ secrets.HOST }}/g" wrangler.toml
-          sed -i "s/\${{ secrets.TOKEN }}/${{ secrets.TOKEN }}/g" wrangler.toml
-          sed -i "s/\${{ secrets.ADDAPI }}/${{ secrets.ADDAPI }}/g" wrangler.toml
-          sed -i "s/\${{ secrets.ADDCSV }}/${{ secrets.ADDCSV }}/g" wrangler.toml
-          sed -i "s/\${{ secrets.ADD }}/${{ secrets.ADD }}/g" wrangler.toml
+          awk -v UUID="${{ secrets.UUID }}" \
+              -v PATH="${{ secrets.PATH }}" \
+              -v HOST="${{ secrets.HOST }}" \
+              -v TOKEN="${{ secrets.TOKEN }}" \
+              -v ADDAPI="${{ secrets.ADDAPI }}" \
+              -v ADDCSV="${{ secrets.ADDCSV }}" \
+              -v ADD="${{ secrets.ADD }}" \
+              '{ gsub(/\${{ secrets.UUID }}/, UUID); \
+                 gsub(/\${{ secrets.PATH }}/, PATH); \
+                 gsub(/\${{ secrets.HOST }}/, HOST); \
+                 gsub(/\${{ secrets.TOKEN }}/, TOKEN); \
+                 gsub(/\${{ secrets.ADDAPI }}/, ADDAPI); \
+                 gsub(/\${{ secrets.ADDCSV }}/, ADDCSV); \
+                 gsub(/\${{ secrets.ADD }}/, ADD); \
+                 print }' wrangler.toml > wrangler.tmp && mv wrangler.tmp wrangler.toml
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
