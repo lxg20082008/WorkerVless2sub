@@ -19,6 +19,3 @@ done < <(sed '/^\[vars\]/,/^[^\[]*$/p' wrangler.toml)
 
 # Write the modified TOML content to the temporary file
 echo "$original_toml_content" > "$temp_toml_file"
-
-# Remove the temporary TOML file
-rm "$temp_toml_file"
