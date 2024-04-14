@@ -26,7 +26,7 @@ jobs:
         run: |
           # Replace placeholder syntax with actual secret values
           for SECRET in UUID PATH HOST TOKEN ADDAPI ADDCSV ADD; do
-            sed -i "s~\"${{ secrets.$SECRET }}~$SECRET~" wrangler.toml
+            sed -i "s~\`echo ${{ secrets.$SECRET }}\`~$SECRET~" wrangler.toml
           done
 
       - name: Show wrangler.toml contents
