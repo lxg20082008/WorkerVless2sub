@@ -28,7 +28,7 @@ jobs:
             echo "UUID=${{ secrets.UUID }}" >> wrangler.toml
           fi
 
-          echo "PATH=${{ secrets.PATH }}" >> wrangler.toml
+          echo "UUID=\"${{ secrets.UUID }}\" >> wrangler.toml"
           echo "HOST=${{ secrets.HOST }}" >> wrangler.toml
           echo "TOKEN=${{ secrets.TOKEN }}" >> wrangler.toml
           echo "ADDAPI=${{ secrets.ADDAPI }}" >> wrangler.toml
