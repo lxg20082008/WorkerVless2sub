@@ -22,20 +22,12 @@ jobs:
       #   id: set_date
       #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      - name: Set environment variables via Cloudflare API
+      - name: Preprocess Wrangler Config
         run: |
-          curl -X PUT "https://api.cloudflare.com/client/v4/accounts/${{ secrets.ACCOUNT_ID }}/workers/scripts/${{ secrets.SCRIPT_NAME }}/metadata/environment_variables" \
-            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-                "ADD": "${{ secrets.ADD }}",
-                "ADDAPI": "${{ secrets.ADDAPI }}",
-                "ADDCSV": "${{ secrets.ADDCSV }}",
-                "HOST": "${{ secrets.HOST }}",
-                "PATH": "${{ secrets.PATH }}",
-                "TOKEN": "${{ secrets.TOKEN }}",
-                "UUID": "${{ secrets.UUID }}"
-              }'
+          # Replace placeholder syntax with actual secret values
+          for SECRET in UUID PATH HOST TOKEN ADDAPI ADDCSV ADD; do
+            sed -i "s~${{ secrets.$SECRET }}~$SECRET~" wrangler.toml
+          done
 
       - name: Show wrangler.toml contents
         run: cat wrangler.toml
