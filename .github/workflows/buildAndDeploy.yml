@@ -40,6 +40,9 @@ jobs:
                  gsub(/\$\$\{secrets.ADD\}/, ADD); \
                  print }' wrangler.toml > wrangler.tmp && mv wrangler.tmp wrangler.toml
 
+      - name: Show wrangler.toml contents
+        run: cat wrangler.toml
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
