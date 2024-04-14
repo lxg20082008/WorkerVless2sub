@@ -22,8 +22,9 @@ jobs:
 
       - name: Set Secrets
         run: |
-          if [[ -n "${{ secrets.UUID }}" ]]; then echo "UUID=\"${{ secrets.UUID }}\" >>
-          wrangler.toml" fi
+          if [[ -n "${{ secrets.UUID }}" ]]; then
+            echo "UUID=\"${{ secrets.UUID }}\" >> wrangler.toml"
+          fi
 
           echo "PATH=\"${{ secrets.PATH }}\" >> wrangler.toml"
           echo "HOST=${{ secrets.HOST }}" >> wrangler.toml
