@@ -23,10 +23,39 @@ jobs:
       #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
       - name: Preprocess Wrangler Config
-        run: |
-          # Replace placeholder syntax with actual secret values using awk
-          awk 'BEGIN { RS = "\n"; FS = "=" } { sub(/${{ secrets.(\w+) }}/, $2, $0) } { print }' wrangler.toml > wrangler.toml.updated
-          mv wrangler.toml.updated wrangler.toml
+        uses: actions/checkout@v4  # This fetches the code from your repository        
+        run: |  # This block defines the commands to run
+          # Install Python dependencies (assuming Python is available on the runner)
+          python -m ensurepip --upgrade
+          pip install re
+        
+          # Define the Python script content (place this within the heredoc)
+          <<EOF > preprocess.py
+          import os
+          import re
+        
+          # Define the secrets dictionary
+          secrets = {
+              "UUID": os.environ["GITHUB_SECRET_UUID"],
+              "PATH": os.environ["GITHUB_SECRET_PATH"],
+              # ... Add other secrets here
+          }
+        
+          # Preprocess the wrangler.toml file
+          with open("wrangler.toml", "r") as f, open("wrangler.toml.updated", "w") as f_out:
+              for line in f:
+                  for secret_name, secret_value in secrets.items():
+                      pattern = re.compile(f"{{\s*secrets\.{secret_name}\s*}}")
+                      line = pattern.sub(secret_value, line)
+                  f_out.write(line)
+        
+          # Replace the original file with the updated one
+          os.remove("wrangler.toml")
+          os.rename("wrangler.toml.updated", "wrangler.toml")
+          EOF
+        
+          # Run the Python script
+          python preprocess.py
 
       - name: Show wrangler.toml contents
         run: cat wrangler.toml
