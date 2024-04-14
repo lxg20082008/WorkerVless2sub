@@ -22,7 +22,7 @@ jobs:
 
       - name: Set Secrets
         run: |
-          echo "UUID=${{ secrets.UUID }}" >> wrangler.toml
+         echo "UUID=${{ secrets.UUID // '' }}" >> wrangler.toml
           echo "PATH=${{ secrets.PATH }}" >> wrangler.toml
           echo "HOST=${{ secrets.HOST }}" >> wrangler.toml
           echo "TOKEN=${{ secrets.TOKEN }}" >> wrangler.toml
