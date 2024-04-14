@@ -1,46 +1,43 @@
 name: buildAndDeployWorker
+
 on:
   push:
     branches:
       - lxg20082008-patch-1
   schedule:
     - cron: "0 05 * * 1,3,5,0" #At 05:00 on Monday, Wednesday, Friday, and Sunday.
-  workflow_dispatch: # 手动触发
+  workflow_dispatch: # Manual trigger
     inputs:
       branch:
         description: 'Branch name'
         required: true
-        default: 'lxg20082008-patch-1' # 默认分支
+        default: 'lxg20082008-patch-1' # Default branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - uses: actions/checkout@v4
-      # - name: Set Compatibility Date
-      #   id: set_date
-      #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
+      - uses: actions/checkout@v4  # Fetch code from repository
 
       - name: Preprocess Wrangler Config
-        uses: actions/checkout@v4  # This fetches the code from your repository        
-        run: |  # This block defines the commands to run
+        run: |
           # Install Python dependencies (assuming Python is available on the runner)
           python -m ensurepip --upgrade
           pip install re
-        
+
           # Define the Python script content (place this within the heredoc)
           <<EOF > preprocess.py
           import os
           import re
-        
+
           # Define the secrets dictionary
           secrets = {
               "UUID": os.environ["GITHUB_SECRET_UUID"],
               "PATH": os.environ["GITHUB_SECRET_PATH"],
               # ... Add other secrets here
           }
-        
+
           # Preprocess the wrangler.toml file
           with open("wrangler.toml", "r") as f, open("wrangler.toml.updated", "w") as f_out:
               for line in f:
@@ -48,16 +45,16 @@ jobs:
                       pattern = re.compile(f"{{\s*secrets\.{secret_name}\s*}}")
                       line = pattern.sub(secret_value, line)
                   f_out.write(line)
-        
+
           # Replace the original file with the updated one
           os.remove("wrangler.toml")
           os.rename("wrangler.toml.updated", "wrangler.toml")
           EOF
-        
+
           # Run the Python script
           python preprocess.py
 
-      - name: Show wrangler.toml contents
+      - name: Show wrangler.toml contents (Optional)
         run: cat wrangler.toml
 
       - name: Deploy
