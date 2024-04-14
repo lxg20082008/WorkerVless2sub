@@ -18,11 +18,15 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Set Script Executable
+        run: |
+          chmod +x rewrite_secrets.sh
+
       - name: Rewrite Secrets
+        uses: actions/shell@v3
         run: |
           bash rewrite_secrets.sh
-          # Optional: Verify modified wrangler.toml file
-          # cat wrangler.toml
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
