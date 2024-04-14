@@ -35,7 +35,11 @@ jobs:
           secrets = {
               "UUID": os.environ["GITHUB_SECRET_UUID"],
               "PATH": os.environ["GITHUB_SECRET_PATH"],
-              # ... Add other secrets here
+              "HOST": os.environ["GITHUB_SECRET_HOST"],
+              "TOKEN": os.environ["GITHUB_SECRET_TOKEN"],
+              "ADDAPI": os.environ["GITHUB_SECRET_ADDAPI"],
+              "ADDCSV": os.environ["GITHUB_SECRET_ADDCSV"],
+              "ADD": os.environ["GITHUB_SECRET_ADD"]
           }
 
           # Preprocess the wrangler.toml file
