@@ -1,18 +1,19 @@
 name: buildAndDeployWorker
 
+name: buildAndDeployWorker
+
 on:
   push:
     branches:
       - lxg20082008-patch-1
-  workflow_dispatch: # 手动触发
-    inputs:
-      branch:
-        description: 'Branch name'
-        required: true
-        default: 'lxg20082008-patch-1' # 默认分支
-    
   schedule:
     - cron: "0 05 * * 1,3,5,0" #At 05:00 on Monday, Wednesday, Friday, and Sunday.
+  workflow_dispatch: # 手动触发
+  inputs:
+    branch:
+      description: 'Branch name'
+      required: true
+      default: 'lxg20082008-patch-1' # 默认分支
 
 jobs:
   deploy:
@@ -20,28 +21,14 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
+      # - name: Set Compatibility Date
+      #   id: set_date
+      #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      # 解决secrets多行文本的问题
-      - name: Check if Perl is installed
-        run: perl -v
-        continue-on-error: true
-      
-      - name: Install Perl if not installed
-        if: ${{ failure() }}
-        run: sudo apt-get install -y perl
-
-      - name: Prepare environment variables
-        run: |
-          ADDAPI_ENCODED=$(echo "${{ secrets.ADDAPI }}" | perl -pe 's/%/%25/g;s/\n/%0A/g;s/\r/%0D/g')
-          ADDCSV_ENCODED=$(echo "${{ secrets.ADDCSV }}" | perl -pe 's/%/%25/g;s/\n/%0A/g;s/\r/%0D/g')
-          ADD_ENCODED=$(echo "${{ secrets.ADD }}" | perl -pe 's/%/%25/g;s/\n/%0A/g;s/\r/%0D/g')
-          echo "ADDAPI_CONTENT=$ADDAPI_ENCODED" >> $GITHUB_ENV
-          echo "ADDCSV_CONTENT=$ADDCSV_ENCODED" >> $GITHUB_ENV
-          echo "ADD_CONTENT=$ADD_ENCODED" >> $GITHUB_ENV
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: "deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:\"${{ secrets.UUID }}\" PATH:\"${{ secrets.PATH }}\" HOST:\"${{ secrets.HOST }}\" TOKEN:\"${{ secrets.TOKEN }}\" ADDAPI_CONTENT:\"$(echo -n \"${{ env.ADDAPI_CONTENT }}\" | perl -pe 's/%/%25/g;s/\n//g;s/\r//g' | base64 -w 0)\" ADDCSV_CONTENT:\"$(echo -n \"${{ env.ADDCSV_CONTENT }}\" | perl -pe 's/%/%25/g;s/\n//g;s/\r//g' | base64 -w 0)\" ADD_CONTENT:\"$(echo -n \"${{ env.ADD_CONTENT }}\" | perl -pe 's/%/%25/g;s/\n//g;s/\r//g' | base64 -w 0)\""
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
