@@ -22,23 +22,20 @@ jobs:
       #   id: set_date
       #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      - name: Set secrets in wrangler.toml
+      - name: Set environment variables via Cloudflare API
         run: |
-          awk -v UUID="${{ secrets.UUID }}" \
-              -v PATH="${{ secrets.PATH }}" \
-              -v HOST="${{ secrets.HOST }}" \
-              -v TOKEN="${{ secrets.TOKEN }}" \
-              -v ADDAPI="${{ secrets.ADDAPI }}" \
-              -v ADDCSV="${{ secrets.ADDCSV }}" \
-              -v ADD="${{ secrets.ADD }}" \
-              '{ gsub(/\$\$\{secrets.UUID\}/, UUID); \
-                 gsub(/\$\$\{secrets.PATH\}/, PATH); \
-                 gsub(/\$\$\{secrets.HOST\}/, HOST); \
-                 gsub(/\$\$\{secrets.TOKEN\}/, TOKEN); \
-                 gsub(/\$\$\{secrets.ADDAPI\}/, ADDAPI); \
-                 gsub(/\$\$\{secrets.ADDCSV\}/, ADDCSV); \
-                 gsub(/\$\$\{secrets.ADD\}/, ADD); \
-                 print }' wrangler.toml > wrangler.tmp && mv wrangler.tmp wrangler.toml
+          curl -X PUT "https://api.cloudflare.com/client/v4/accounts/${{ secrets.ACCOUNT_ID }}/workers/scripts/${{ secrets.SCRIPT_NAME }}/metadata/environment_variables" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{
+              "ADD": "${{ secrets.ADD }}",
+              "ADDAPI": "${{ secrets.ADDAPI }}",
+              "ADDCSV": "${{ secrets.ADDCSV }}",
+              "HOST": "${{ secrets.HOST }}",
+              "PATH": "${{ secrets.PATH }}",
+              "TOKEN": "${{ secrets.TOKEN }}",
+              "UUID": "${{ secrets.UUID }}"
+            }'
 
       - name: Show wrangler.toml contents
         run: cat wrangler.toml
