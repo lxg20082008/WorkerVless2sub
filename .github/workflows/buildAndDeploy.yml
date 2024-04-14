@@ -41,4 +41,6 @@ jobs:
 
       - name: Remove Temporary File
         run: |
-          rm "$env.temp_toml_file"
+          # Define the temporary file path based on your script's logic (replace with actual logic)
+          temp_toml_file=$(mktemp -t wrangler-temp.XXXXXX.toml)
+          rm "$temp_toml_file"
