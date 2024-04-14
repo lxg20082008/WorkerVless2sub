@@ -23,12 +23,12 @@ jobs:
       - name: Set Secrets
         run: |
           if [[ -z "${{ secrets.UUID }}" ]]; then
-            echo "UUID='' " >> wrangler.toml
+            # Do nothing (since the secret is empty)
           else
-            echo "UUID=${{ secrets.UUID }}" >> wrangler.toml
+            echo "UUID=\"${{ secrets.UUID }}\" >> wrangler.toml"
           fi
 
-          echo "UUID=\"${{ secrets.UUID }}\" >> wrangler.toml"
+          echo "PATH=\"${{ secrets.PATH }}\" >> wrangler.toml"
           echo "HOST=${{ secrets.HOST }}" >> wrangler.toml
           echo "TOKEN=${{ secrets.TOKEN }}" >> wrangler.toml
           echo "ADDAPI=${{ secrets.ADDAPI }}" >> wrangler.toml
