@@ -5,7 +5,7 @@ on:
     branches:
       - lxg20082008-patch-1
   schedule:
-    - cron: "0 05 * * 1,3,5,0" #At 05:00 on Monday, Wednesday, Friday, and Sunday.
+    - cron: "0 5 * * 1,3,5,0" # At 05:00 on Monday, Wednesday, Friday, and Sunday.
   workflow_dispatch: # Manual trigger
     inputs:
       branch:
@@ -19,22 +19,35 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v4
-      # - name: Set Compatibility Date
-      #   id: set_date
-      #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-      - name: Deploy
+      - name: Retrieve and Convert Secrets
+        run: |
+          # Retrieve secrets from GitHub secrets
+          UUID=$(echo "${{ secrets.UUID }}" | sed 's/[[:punct:]\s]/\\&/g')
+          PATH=$(echo "${{ secrets.PATH }}" | sed 's/[[:punct:]\s]/\\&/g')
+          HOST=$(echo "${{ secrets.HOST }}" | sed 's/[[:punct:]\s]/\\&/g')
+          TOKEN=$(echo "${{ secrets.TOKEN }}" | sed 's/[[:punct:]\s]/\\&/g')
+          ADDAPI=$(echo "${{ secrets.ADDAPI }}" | sed 's/[[:punct:]\s]/\\&/g')
+          ADDCSV=$(echo "${{ secrets.ADDCSV }}" | sed 's/[[:punct:]\s]/\\&/g')
+          ADD=$(echo "${{ secrets.ADD }}" | sed 's/[[:punct:]\s]/\\&/g')
+
+          # Convert multiline secrets to JSON
+          secrets_json=$(jq -n '{
+            "UUID": "${UUID}",
+            "PATH": "${PATH}",
+            "HOST": "${HOST}",
+            "TOKEN": "${TOKEN}",
+            "ADDAPI": "${ADDAPI}",
+            "ADDCSV": "${ADDCSV}",
+            "ADD": "${ADD}"
+          }')
+
+      - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: .
+          workingDirectory: .  # Use the current working directory
           command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
 
-        env:
-          UUID: ${{ secrets.UUID }}
-          PATH: ${{ secrets.PATH }}
-          HOST: ${{ secrets.HOST }}
-          TOKEN: ${{ secrets.TOKEN }}
-          ADDAPI: ${{ secrets.ADDAPI }}
-          ADDCSV: ${{ secrets.ADDCSV }}
-          ADD: ${{ secrets.ADD }}
+      - env:  # Define environment variables with converted JSON
+          SECRETS_JSON: ${{ secrets_json }}
