@@ -19,3 +19,9 @@ done < <(sed '/^\[vars\]/,/^[^\[]*$/p' wrangler.toml)
 
 # Write the modified TOML content to the temporary file
 echo "$original_toml_content" > "$temp_toml_file"
+
+# Set the temp_toml_file environment variable
+echo "env.temp_toml_file=$temp_toml_file" >> $GITHUB_ENV
+
+# (Optional: Exit with a specific code if needed)
+# exit 0
