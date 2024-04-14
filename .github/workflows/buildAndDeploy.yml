@@ -22,18 +22,18 @@ jobs:
       - uses: actions/checkout@v4
 
       # 解决secrets多行文本的问题
-      - name: Write multi-line secrets to files
+      - name: Prepare environment variables
         run: |
-          echo "${{ secrets.ADDAPI }}" > addapi.txt
-          echo "${{ secrets.ADDCSV }}" > addcsv.txt
-          echo "${{ secrets.ADD }}" > add.txt
+          echo "::set-env name=ADDAPI_CONTENT::$(echo "${{ secrets.ADDAPI }}" | base64)"
+          echo "::set-env name=ADDCSV_CONTENT::$(echo "${{ secrets.ADDCSV }}" | base64)"
+          echo "::set-env name=ADD_CONTENT::$(echo "${{ secrets.ADD }}" | base64)"
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI_FILE:addapi.txt ADDCSV_FILE:addcsv.txt ADD_FILE:add.txt
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI_CONTENT:"${{ env.ADDAPI_CONTENT }}" ADDCSV_CONTENT:"${{ env.ADDCSV_CONTENT }}" ADD_CONTENT:"${{ env.ADD_CONTENT }}"
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
