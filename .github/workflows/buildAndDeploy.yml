@@ -24,10 +24,9 @@ jobs:
 
       - name: Preprocess Wrangler Config
         run: |
-          # Replace placeholder syntax with actual secret values
-          for SECRET in UUID PATH HOST TOKEN ADDAPI ADDCSV ADD; do
-            sed -i "s~\`echo ${{ secrets.$SECRET }}\`~$SECRET~" wrangler.toml
-          done
+          # Replace placeholder syntax with actual secret values using awk
+          awk 'BEGIN { RS = "\n"; FS = "=" } { sub(/${{ secrets.(\w+) }}/, $2, $0) } { print }' wrangler.toml > wrangler.toml.updated
+          mv wrangler.toml.updated wrangler.toml
 
       - name: Show wrangler.toml contents
         run: cat wrangler.toml
