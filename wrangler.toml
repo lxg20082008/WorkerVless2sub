@@ -7,13 +7,13 @@ type = "javascript"
 account_id = "${{ secrets.ACCOUNT_ID }}"
 workers_dev = true
 
-UUID = env.UUID
-PATH = env.PATH
-HOST = env.HOST
-TOKEN = env.TOKEN
-ADDAPI = env.ADDAPI
-ADDCSV = env.ADDCSV
-ADD = env.ADD
+UUID = "${{ secrets.UUID }}"
+PATH = "${{ secrets.PATH }}"
+HOST = "${{ secrets.HOST }}"
+TOKEN = "${{ secrets.TOKEN }}"
+ADDAPI = "${{ secrets.ADDAPI }}"
+ADDCSV = "${{ secrets.ADDCSV }}"
+ADD = "${{ secrets.ADD }}"
 
 [env.production]
 zone_id = "${{ secrets.ZONE_ID }}"
