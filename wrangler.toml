@@ -19,7 +19,7 @@ ADD = "${{ secrets.ADD }}"
 zone_id = "${{ secrets.ZONE_ID }}"
 route = "${{ secrets.ROUTE }}"
 
-[vars]
+# [vars]
 # UUID = "${{ secrets.UUID }}"
 # PATH = "${{ secrets.PATH }}"
 # HOST = "${{ secrets.HOST }}"
