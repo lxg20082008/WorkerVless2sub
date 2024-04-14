@@ -27,15 +27,15 @@ jobs:
           curl -X PUT "https://api.cloudflare.com/client/v4/accounts/${{ secrets.ACCOUNT_ID }}/workers/scripts/${{ secrets.SCRIPT_NAME }}/metadata/environment_variables" \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            --data '{
-              "ADD": "${{ secrets.ADD }}",
-              "ADDAPI": "${{ secrets.ADDAPI }}",
-              "ADDCSV": "${{ secrets.ADDCSV }}",
-              "HOST": "${{ secrets.HOST }}",
-              "PATH": "${{ secrets.PATH }}",
-              "TOKEN": "${{ secrets.TOKEN }}",
-              "UUID": "${{ secrets.UUID }}"
-            }'
+            -d '{
+                "ADD": "${{ secrets.ADD }}",
+                "ADDAPI": "${{ secrets.ADDAPI }}",
+                "ADDCSV": "${{ secrets.ADDCSV }}",
+                "HOST": "${{ secrets.HOST }}",
+                "PATH": "${{ secrets.PATH }}",
+                "TOKEN": "${{ secrets.TOKEN }}",
+                "UUID": "${{ secrets.UUID }}"
+              }'
 
       - name: Show wrangler.toml contents
         run: cat wrangler.toml
