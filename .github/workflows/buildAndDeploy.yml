@@ -25,7 +25,6 @@ jobs:
       #   id: set_date
       #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
-
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
