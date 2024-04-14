@@ -2,6 +2,7 @@
 
 # Create a temporary TOML file
 temp_toml_file=$(mktemp -t wrangler-temp.XXXXXX.toml)
+echo "Temporary file created successfully: $temp_toml_file"
 
 # Read the original wrangler.toml file
 original_toml_content=$(cat wrangler.toml)
@@ -19,9 +20,11 @@ done < <(sed '/^\[vars\]/,/^[^\[]*$/p' wrangler.toml)
 
 # Write the modified TOML content to the temporary file
 echo "$original_toml_content" > "$temp_toml_file"
+cat $temp_toml_file
 
 # Set the temp_toml_file environment variable
 echo "env.temp_toml_file=$temp_toml_file" >> $GITHUB_ENV
+echo "env.temp_toml_file created successfully: ${{env.temp_toml_file}}"
 
 # (Optional: Exit with a specific code if needed)
 # exit 0
