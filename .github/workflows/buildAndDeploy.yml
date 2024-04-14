@@ -20,44 +20,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4  # Fetch code from repository
 
-      - name: Preprocess Wrangler Config.
-
+      - name: Set Secrets
         run: |
-          # Install Python dependencies using apt
-          apt update && apt install -y python3-re
-
-          # Define the Python script content (place this within the heredoc)
-          <<EOF > preprocess.py
-          import os
-          import re
-
-          # Define the secrets dictionary
-          secrets = {
-              "UUID": os.environ["GITHUB_SECRET_UUID"],
-              "PATH": os.environ["GITHUB_SECRET_PATH"],
-              "HOST": os.environ["GITHUB_SECRET_HOST"],
-              "TOKEN": os.environ["GITHUB_SECRET_TOKEN"],
-              "ADDAPI": os.environ["GITHUB_SECRET_ADDAPI"],
-              "ADDCSV": os.environ["GITHUB_SECRET_ADDCSV"],
-              "ADD": os.environ["GITHUB_SECRET_ADD"],
-          }
-
-          # Preprocess the wrangler.toml file
-          with open("wrangler.toml", "r") as f, open("wrangler.toml.updated", "w") as f_out:
-              for line in f:
-                  for secret_name, secret_value in secrets.items():
-                      pattern = re.compile(f"{{\s*secrets\.{secret_name}\s*}}")
-                      line = pattern.sub(secret_value, line)
-                  f_out.write(line)
-
-          # Replace the original file with the updated one
-          os.remove("wrangler.toml")
-          os.rename("wrangler.toml.updated", "wrangler.toml")
-          EOF
-
-          # Run the Python script
-          python preprocess.py
-          cache: null  # Disable caching for the entire job
+          echo "UUID=${{ secrets.UUID }}" >> wrangler.toml
+          echo "PATH=${{ secrets.PATH }}" >> wrangler.toml
+          echo "HOST=${{ secrets.HOST }}" >> wrangler.toml
+          echo "TOKEN=${{ secrets.TOKEN }}" >> wrangler.toml
+          echo "ADDAPI=${{ secrets.ADDAPI }}" >> wrangler.toml
+          echo "ADDCSV=${{ secrets.ADDCSV }}" >> wrangler.toml
+          echo "ADD=${{ secrets.ADD }}" >> wrangler.toml
+    
       - name: Show wrangler.toml contents (Optional)
         run: cat wrangler.toml
 
