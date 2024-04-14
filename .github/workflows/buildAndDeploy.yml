@@ -20,11 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4  # Fetch code from repository
 
-      - name: Preprocess Wrangler Config
+      - name: Preprocess Wrangler Config.
+
         run: |
           # Install Python dependencies using apt
           apt update && apt install -y python3-re
-
+          cache:
+            path: null  # Disable caching for this step
           # Define the Python script content (place this within the heredoc)
           <<EOF > preprocess.py
           import os
