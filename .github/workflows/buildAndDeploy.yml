@@ -22,34 +22,18 @@ jobs:
       - uses: actions/checkout@v4
 
       # 解决secrets多行文本的问题
-      - name: Read multi-line secret
+      - name: Write multi-line secrets to files
         run: |
-          # 读取多行环境变量并存储到单行变量中
-          ADDAPI_CONTENT="${{ secrets.ADDAPI }}"
-          ADDCSV_CONTENT="${{ secrets.ADDCSV }}"
-          ADD_CONTENT="${{ secrets.ADD }}"
-      
-          # 在调试时输出内容
-          echo "ADDAPI_CONTENT: $ADDAPI_CONTENT"
-          echo "ADDCSV_CONTENT: $ADDCSV_CONTENT"
-          echo "ADD_CONTENT: $ADD_CONTENT"
-      
-          # 将多行内容转换成单行，每行使用特定的分隔符（例如分号）
-          ADDAPI_CONTENT=$(echo "$ADDAPI_CONTENT" | tr '\n' ';')
-          ADDCSV_CONTENT=$(echo "$ADDCSV_CONTENT" | tr '\n' ';')
-          ADD_CONTENT=$(echo "$ADD_CONTENT" | tr '\n' ';')
-      
-          # 在调试时输出转换后的内容
-          echo "ADDAPI_CONTENT (single line): $ADDAPI_CONTENT"
-          echo "ADDCSV_CONTENT (single line): $ADDCSV_CONTENT"
-          echo "ADD_CONTENT (single line): $ADD_CONTENT"
+          echo "${{ secrets.ADDAPI }}" > addapi.txt
+          echo "${{ secrets.ADDCSV }}" > addcsv.txt
+          echo "${{ secrets.ADD }}" > add.txt
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI:"$ADDAPI_CONTENT" ADDCSV:"$ADDCSV_CONTENT" ADD:"$ADD_CONTENT"
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI_FILE:addapi.txt ADDCSV_FILE:addcsv.txt ADD_FILE:add.txt
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
