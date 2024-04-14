@@ -24,16 +24,19 @@ jobs:
       # 解决secrets多行文本的问题
       - name: Prepare environment variables
         run: |
-          echo "ADDAPI_CONTENT=$(echo "${{ secrets.ADDAPI }}")" > env.txt
-          echo "ADDCSV_CONTENT=$(echo "${{ secrets.ADDCSV }}")" >> env.txt
-          echo "ADD_CONTENT=$(echo "${{ secrets.ADD }}")" >> env.txt
+          ADDAPI_CONTENT=$(echo "${{ secrets.ADDAPI }}" | base64)
+          ADDCSV_CONTENT=$(echo "${{ secrets.ADDCSV }}" | base64)
+          ADD_CONTENT=$(echo "${{ secrets.ADD }}" | base64)
+          echo "ADDAPI_CONTENT=$ADDAPI_CONTENT" >> $GITHUB_ENV
+          echo "ADDCSV_CONTENT=$ADDCSV_CONTENT" >> $GITHUB_ENV
+          echo "ADD_CONTENT=$ADD_CONTENT" >> $GITHUB_ENV
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" --env-file env.txt
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI_CONTENT:"${{ env.ADDAPI_CONTENT }}" ADDCSV_CONTENT:"${{ env.ADDCSV_CONTENT }}" ADD_CONTENT:"${{ env.ADD_CONTENT }}"
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
