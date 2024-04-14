@@ -57,7 +57,7 @@ jobs:
 
           # Run the Python script
           python preprocess.py
-
+          cache: null  # Disable caching for the entire job
       - name: Show wrangler.toml contents (Optional)
         run: cat wrangler.toml
 
@@ -67,4 +67,3 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
           command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
-    cache: null  # Disable caching for the entire job
