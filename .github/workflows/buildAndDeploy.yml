@@ -25,13 +25,24 @@ jobs:
           if [[ -n "${{ secrets.UUID }}" ]]; then
             echo "UUID=\"${{ secrets.UUID }}\" >> wrangler.toml"
           fi
-
-          echo "PATH=\"${{ secrets.PATH }}\" >> wrangler.toml"
-          echo "HOST=${{ secrets.HOST }}" >> wrangler.toml
-          echo "TOKEN=${{ secrets.TOKEN }}" >> wrangler.toml
-          echo "ADDAPI=${{ secrets.ADDAPI }}" >> wrangler.toml
-          echo "ADDCSV=${{ secrets.ADDCSV }}" >> wrangler.toml
-          echo "ADD=${{ secrets.ADD }}" >> wrangler.toml
+          if [[ -n "${{ secrets.PATH }}" ]]; then
+            echo "PATH=\"${{ secrets.PATH }}\" >> wrangler.toml"
+          fi
+          if [[ -n "${{ secrets.HOST }}" ]]; then
+            echo "HOST=${{ secrets.HOST }}\\" >> wrangler.toml
+          fi
+          if [[ -n "${{ secrets.TOKEN }}" ]]; then
+            echo "TOKEN=${{ secrets.TOKEN }}\\" >> wrangler.toml
+          fi
+          if [[ -n "${{ secrets.ADDAPI }}" ]]; then
+            echo "ADDAPI=${{ secrets.ADDAPI }}\\" >> wrangler.toml
+          fi
+          if [[ -n "${{ secrets.ADDCSV }}" ]]; then
+            echo "ADDCSV=${{ secrets.ADDCSV }}\\" >> wrangler.toml
+          fi
+          if [[ -n "${{ secrets.ADD }}" ]]; then
+            echo "ADD=${{ secrets.ADD }}\" >> wrangler.toml
+          fi
     
       - name: Show wrangler.toml contents (Optional)
         run: cat wrangler.toml
