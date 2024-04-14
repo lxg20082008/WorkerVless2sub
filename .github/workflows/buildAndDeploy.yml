@@ -24,12 +24,12 @@ jobs:
       # 解决secrets多行文本的问题
       - name: Prepare environment variables
         run: |
-          ADDAPI_CONTENT=$(echo "${{ secrets.ADDAPI }}" | base64)
-          ADDCSV_CONTENT=$(echo "${{ secrets.ADDCSV }}" | base64)
-          ADD_CONTENT=$(echo "${{ secrets.ADD }}" | base64)
-          echo "ADDAPI_CONTENT=$ADDAPI_CONTENT" >> $GITHUB_ENV
-          echo "ADDCSV_CONTENT=$ADDCSV_CONTENT" >> $GITHUB_ENV
-          echo "ADD_CONTENT=$ADD_CONTENT" >> $GITHUB_ENV
+          ADDAPI_MASKED=$(echo "${{ secrets.ADDAPI }}" | sed 's/^ */::add-mask::/')
+          ADDCSV_MASKED=$(echo "${{ secrets.ADDCSV }}" | sed 's/^ */::add-mask::/')
+          ADD_MASKED=$(echo "${{ secrets.ADD }}" | sed 's/^ */::add-mask::/')
+          echo "ADDAPI_CONTENT=$ADDAPI_MASKED" >> $GITHUB_ENV
+          echo "ADDCSV_CONTENT=$ADDCSV_MASKED" >> $GITHUB_ENV
+          echo "ADD_CONTENT=$ADD_MASKED" >> $GITHUB_ENV
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
