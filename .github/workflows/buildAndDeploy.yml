@@ -22,26 +22,34 @@ jobs:
       - uses: actions/checkout@v4
 
       # 解决secrets多行文本的问题
-      - name: Set ADDAPI output
-        id: set_ADDAPI
+      - name: Read multi-line secret
         run: |
-          echo 'ADDAPI<<EOF' >> $GITHUB_ENV
-          echo "${{ secrets.ADDAPI }}" | sed 's/\\/\\\\/g; s/$/\\n/' | sed 's/:/\\:/g; s/#/\\#/g; s/\//\\\//g' >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          # 读取多行环境变量并存储到单行变量中
+          ADDAPI_CONTENT="${{ secrets.ADDAPI }}"
+          ADDCSV_CONTENT="${{ secrets.ADDCSV }}"
+          ADD_CONTENT="${{ secrets.ADD }}"
       
-      - name: Set ADDCSV output
-        id: set_ADDCSV
-        run: |
-          echo 'ADDCSV<<EOF' >> $GITHUB_ENV
-          echo "${{ secrets.ADDCSV }}" | sed 's/\\/\\\\/g; s/$/\\n/' | sed 's/:/\\:/g; s/#/\\#/g; s/\//\\\//g' >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          # 在调试时输出内容
+          echo "ADDAPI_CONTENT: $ADDAPI_CONTENT"
+          echo "ADDCSV_CONTENT: $ADDCSV_CONTENT"
+          echo "ADD_CONTENT: $ADD_CONTENT"
       
-      - name: Set ADD output
-        id: set_ADD
-        run: |
-          echo 'ADD<<EOF' >> $GITHUB_ENV
-          echo "${{ secrets.ADD }}" | sed 's/\\/\\\\/g; s/$/\\n/' | sed 's/:/\\:/g; s/#/\\#/g; s/\//\\\//g' >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          # 将多行内容转换成单行，每行使用特定的分隔符（例如分号）
+          ADDAPI_CONTENT=$(echo "$ADDAPI_CONTENT" | tr '\n' ';')
+          ADDCSV_CONTENT=$(echo "$ADDCSV_CONTENT" | tr '\n' ';')
+          ADD_CONTENT=$(echo "$ADD_CONTENT" | tr '\n' ';')
+      
+          # 在调试时输出转换后的内容
+          echo "ADDAPI_CONTENT (single line): $ADDAPI_CONTENT"
+          echo "ADDCSV_CONTENT (single line): $ADDCSV_CONTENT"
+          echo "ADD_CONTENT (single line): $ADD_CONTENT"
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: .
+          command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} --var UUID:"${{ secrets.UUID }}" PATH:"${{ secrets.PATH }}" HOST:"${{ secrets.HOST }}" TOKEN:"${{ secrets.TOKEN }}" ADDAPI:"$ADDAPI_CONTENT" ADDCSV:"$ADDCSV_CONTENT" ADD:"$ADD_CONTENT"
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
