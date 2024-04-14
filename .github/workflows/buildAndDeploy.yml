@@ -22,9 +22,8 @@ jobs:
 
       - name: Preprocess Wrangler Config
         run: |
-          # Install Python dependencies (assuming Python is available on the runner)
-          python -m ensurepip --upgrade
-          pip install re
+          # Install Python dependencies using apt
+          apt update && apt install -y python3-re
 
           # Define the Python script content (place this within the heredoc)
           <<EOF > preprocess.py
