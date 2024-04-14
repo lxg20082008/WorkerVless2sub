@@ -18,34 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - uses: actions/checkout@v4  # Fetch code from repository
-
-      - name: Set Secrets
-        run: |
-          if [[ -n "${{ secrets.UUID }}" ]]; then
-            echo "UUID=\"${{ secrets.UUID }}\" >> wrangler.toml"
-          fi
-          if [[ -n "${{ secrets.PATH }}" ]]; then
-            echo "PATH=\"${{ secrets.PATH }}\" >> wrangler.toml"
-          fi
-          if [[ -n "${{ secrets.HOST }}" ]]; then
-            echo "HOST=${{ secrets.HOST }}\\" >> wrangler.toml
-          fi
-          if [[ -n "${{ secrets.TOKEN }}" ]]; then
-            echo "TOKEN=${{ secrets.TOKEN }}\\" >> wrangler.toml
-          fi
-          if [[ -n "${{ secrets.ADDAPI }}" ]]; then
-            echo "ADDAPI=${{ secrets.ADDAPI }}\\" >> wrangler.toml
-          fi
-          if [[ -n "${{ secrets.ADDCSV }}" ]]; then
-            echo "ADDCSV=${{ secrets.ADDCSV }}\\" >> wrangler.toml
-          fi
-          if [[ -n "${{ secrets.ADD }}" ]]; then
-            echo "ADD=${{ secrets.ADD }}\" >> wrangler.toml
-          fi
-    
-      - name: Show wrangler.toml contents (Optional)
-        run: cat wrangler.toml
+      - uses: actions/checkout@v4
+      # - name: Set Compatibility Date
+      #   id: set_date
+      #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
@@ -53,3 +29,12 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
           command: deploy _worker.js --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
+
+        env:
+          UUID: ${{ secrets.UUID }}
+          PATH: ${{ secrets.PATH }}
+          HOST: ${{ secrets.HOST }}
+          TOKEN: ${{ secrets.TOKEN }}
+          ADDAPI: ${{ secrets.ADDAPI }}
+          ADDCSV: ${{ secrets.ADDCSV }}
+          ADD: ${{ secrets.ADD }}
