@@ -26,21 +26,21 @@ jobs:
         id: set_ADDAPI
         run: |
           echo 'ADDAPI<<EOF' >> $GITHUB_ENV
-          echo "${{ secrets.ADDAPI }}" >> $GITHUB_ENV
+          echo "${{ secrets.ADDAPI }}" | sed 's/\\/\\\\/g; s/$/\\n/' | sed 's/:/\\:/g; s/#/\\#/g; s/\//\\\//g' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
+      
       - name: Set ADDCSV output
         id: set_ADDCSV
         run: |
           echo 'ADDCSV<<EOF' >> $GITHUB_ENV
-          echo "${{ secrets.ADDCSV }}" >> $GITHUB_ENV
+          echo "${{ secrets.ADDCSV }}" | sed 's/\\/\\\\/g; s/$/\\n/' | sed 's/:/\\:/g; s/#/\\#/g; s/\//\\\//g' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
+      
       - name: Set ADD output
         id: set_ADD
         run: |
           echo 'ADD<<EOF' >> $GITHUB_ENV
-          echo "${{ secrets.ADD }}" >> $GITHUB_ENV
+          echo "${{ secrets.ADD }}" | sed 's/\\/\\\\/g; s/$/\\n/' | sed 's/:/\\:/g; s/#/\\#/g; s/\//\\\//g' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - name: Deploy
