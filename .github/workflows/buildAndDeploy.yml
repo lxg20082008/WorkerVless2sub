@@ -27,9 +27,9 @@ jobs:
         run: |
           bash rewrite_secrets.sh
 
-      - name: view temp_toml_file
+      - name: Check Temporary File
         run: |
-          cat "${{env.temp_toml_file}}"
+          cat ${{ env.temp_toml_file }}
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
