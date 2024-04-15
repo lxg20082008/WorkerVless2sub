@@ -24,7 +24,8 @@ cat $temp_toml_file
 
 # Set the temp_toml_file environment variable
 echo "env.temp_toml_file=$temp_toml_file" >> $GITHUB_ENV
-echo "env.temp_toml_file created successfully:" $env.temp_toml_file
+echo "env.temp_toml_file created successfully: env.temp_toml_file"
+cat $env.temp_toml_file
 
 # (Optional: Exit with a specific code if needed)
 # exit 0
