@@ -4,21 +4,22 @@
 temp_toml_file=$(mktemp -t wrangler-temp.XXXXXX.toml)
 echo "Temporary file created successfully: $temp_toml_file"
 
-# Copy the contents of the original wrangler.toml file to the temporary file
+# Copy the original wrangler.toml content to a temporary file
 cp wrangler.toml "$temp_toml_file"
 
 # Replace placeholders with actual secret values in the temporary file
-while IFS= read -r line; do
-  var_name=$(echo $line | sed -n 's/.*${{ secrets.\(.*\) }}.*/\1/p')
-  if [ -n "$var_name" ]; then
-    secret_value=$(jq -r .env.$var_name <<< "$GITHUB_ENV")
-    sed -i "s|\${{ secrets.$var_name }}|$secret_value|g" "$temp_toml_file"
-  fi
-done < <(grep -o '\${{ secrets.[^ ]* }}' wrangler.toml)
+sed -i "s|\\${{ secrets.UUID }}|${UUID}|g" "$temp_toml_file"
+sed -i "s|\\${{ secrets.PATH }}|${PATH}|g" "$temp_toml_file"
+sed -i "s|\\${{ secrets.HOST }}|${HOST}|g" "$temp_toml_file"
+sed -i "s|\\${{ secrets.TOKEN }}|${TOKEN}|g" "$temp_toml_file"
+sed -i "s|\\${{ secrets.ADDAPI }}|${ADDAPI}|g" "$temp_toml_file"
+sed -i "s|\\${{ secrets.ADDCSV }}|${ADDCSV}|g" "$temp_toml_file"
+sed -i "s|\\${{ secrets.ADD }}|${ADD}|g" "$temp_toml_file"
 
-cat $temp_toml_file
+# Print out the contents of the modified TOML file for verification
+cat "$temp_toml_file"
 
-# Set the temp_toml_file environment variable
+# Expose the path of the temporary file as an environment variable for other steps to consume
 echo "temp_toml_file=$temp_toml_file" >> $GITHUB_ENV
 echo "temp_toml_file environment variable is created:" 'env.temp_toml_file'
 
