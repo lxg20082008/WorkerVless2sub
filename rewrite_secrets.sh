@@ -25,8 +25,8 @@ echo 'ADD = """' >> "$temp_toml_file"
 echo "$SECRET_ADD" >> "$temp_toml_file"
 echo '"""' >> "$temp_toml_file"
 # 把 = """ 替换为 = (等号后面跟着一个空格)，并且移除所有的 """
-sed -i 's/= \"\"\"/= /g' \"$temp_toml_file\"
-sed -i 's/\"\"\"//g' \"$temp_toml_file\"
+sed -i 's/= \"\"\"/= /g' "$temp_toml_file"
+sed -i 's/\"\"\"//g' "$temp_toml_file"
 
 # ####Print out the contents of the modified TOML file for verification
 cat "$temp_toml_file"
