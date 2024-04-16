@@ -7,14 +7,15 @@ echo "Temporary file created successfully: $temp_toml_file"
 # Copy the original wrangler.toml content to a temporary file
 cp wrangler.toml "$temp_toml_file"
 
-# Replace placeholders with actual secret values in the temporary file
-sed -i "s|\\${{ secrets.UUID }}|${SECRET_UUID}|g" "$temp_toml_file"
-sed -i "s|\\${{ secrets.PATH }}|${SECRET_PATH}|g" "$temp_toml_file"
-sed -i "s|\\${{ secrets.HOST }}|${SECRET_HOST}|g" "$temp_toml_file"
-sed -i "s|\\${{ secrets.TOKEN }}|${SECRET_TOKEN}|g" "$temp_toml_file"
-sed -i "s|\\${{ secrets.ADDAPI }}|${SECRET_ADDAPI}|g" "$temp_toml_file"
-sed -i "s|\\${{ secrets.ADDCSV }}|${SECRET_ADDCSV}|g" "$temp_toml_file"
-sed -i "s|\\${{ secrets.ADD }}|${SECRET_ADD}|g" "$temp_toml_file"
+# Replace placeholder with actual secret value in the temporary file
+# Here we're using the actual environment variable name instead of the secret placeholder
+sed -i "s|\\${{secrets.UUID}}|${SECRET_UUID}|g" "$temp_toml_file"
+sed -i "s|\\${{secrets.PATH}}|${SECRET_PATH}|g" "$temp_toml_file"
+sed -i "s|\\${{secrets.HOST}}|${SECRET_HOST}|g" "$temp_toml_file"
+sed -i "s|\\${{secrets.TOKEN}}|${SECRET_TOKEN}|g" "$temp_toml_file"
+sed -i "s|\\${{secrets.ADDAPI}}|${SECRET_ADDAPI}|g" "$temp_toml_file"
+sed -i "s|\\${{secrets.ADDCSV}}|${SECRET_ADDCSV}|g" "$temp_toml_file"
+sed -i "s|\\${{secrets.ADD}}|${SECRET_ADD}|g" "$temp_toml_file"
 
 # Print out the contents of the modified TOML file for verification
 cat "$temp_toml_file"
