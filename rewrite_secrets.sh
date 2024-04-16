@@ -12,11 +12,10 @@ echo "UUID = \"$SECRET_UUID\"" >> "$temp_toml_file"
 echo "PATH = \"$SECRET_PATH\"" >> "$temp_toml_file"
 echo "HOST = \"$SECRET_HOST\"" >> "$temp_toml_file"
 echo "TOKEN = \"$SECRET_TOKEN\"" >> "$temp_toml_file"
-# 添加多行字符串的值
 # 添加多行字符串的值，不添加额外的双引号和空行
-printf "ADDAPI = \"\"\"\n%s\n\"\"\"" "$SECRET_ADDAPI" >> "$temp_toml_file"
-printf "ADDCSV = \"\"\"\n%s\n\"\"\"" "$SECRET_ADDCSV" >> "$temp_toml_file"
-printf "ADD = \"\"\"\n%s\"\"\"" "$SECRET_ADD" >> "$temp_toml_file"
+printf "ADDAPI = \"\"\"\n%s\n\"\"\"\n" "$SECRET_ADDAPI" >> "$temp_toml_file"
+printf "ADDCSV = \"\"\"\n%s\n\"\"\"\n" "$SECRET_ADDCSV" >> "$temp_toml_file"
+printf "ADD = \"\"\"\n%s\n\"\"\"\n" "$SECRET_ADD" >> "$temp_toml_file"
 
 # Print out the contents of the modified TOML file for verification
 cat "$temp_toml_file"
