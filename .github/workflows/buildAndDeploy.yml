@@ -23,16 +23,16 @@ jobs:
         run: |
           chmod +x rewrite_secrets.sh
 
-    - name: Set Secrets as Environment Variables
-      env:
-        SECRET_UUID: ${{ secrets.UUID }}
-        SECRET_PATH: ${{ secrets.PATH }} # 注意这里更改了变量名称
-        SECRET_HOST: ${{ secrets.HOST }}
-        SECRET_TOKEN: ${{ secrets.TOKEN }}
-        SECRET_ADDAPI: ${{ toJson(secrets.ADDAPI) }}
-        SECRET_ADDCSV: ${{ toJson(secrets.ADDCSV) }}
-        SECRET_ADD: ${{ toJson(secrets.ADD) }}
-      run: bash rewrite_secrets.sh
+      - name: Set Secrets as Environment Variables
+        env:
+          SECRET_UUID: ${{ secrets.UUID }}
+          SECRET_PATH: ${{ secrets.PATH }} # 注意这里更改了变量名称
+          SECRET_HOST: ${{ secrets.HOST }}
+          SECRET_TOKEN: ${{ secrets.TOKEN }}
+          SECRET_ADDAPI: ${{ toJson(secrets.ADDAPI) }}
+          SECRET_ADDCSV: ${{ toJson(secrets.ADDCSV) }}
+          SECRET_ADD: ${{ toJson(secrets.ADD) }}
+        run: bash rewrite_secrets.sh
 
       - name: Check Temporary File
         run: |
