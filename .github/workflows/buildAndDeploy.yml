@@ -24,14 +24,14 @@ jobs:
           chmod +x rewrite_secrets.sh
 
       - name: Set Secrets as Environment Variables
-        # env:
-        #   UUID: ${{ secrets.UUID }}
-        #   PATH: ${{ secrets.PATH }}
-        #   HOST: ${{ secrets.HOST }}
-        #   TOKEN: ${{ secrets.TOKEN }}
-        #   ADDAPI: ${{ toJson(secrets.ADDAPI) }}
-        #   ADDCSV: ${{ toJson(secrets.ADDCSV) }}
-        #   ADD: ${{ toJson(secrets.ADD) }}
+        env:
+          UUID: ${{ secrets.UUID }}
+          PATH: ${{ secrets.PATH }}
+          HOST: ${{ secrets.HOST }}
+          TOKEN: ${{ secrets.TOKEN }}
+          ADDAPI: ${{ toJson(secrets.ADDAPI) }}
+          ADDCSV: ${{ toJson(secrets.ADDCSV) }}
+          ADD: ${{ toJson(secrets.ADD) }}
         run: bash rewrite_secrets.sh
 
       - name: Check Temporary File
