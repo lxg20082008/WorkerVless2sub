@@ -13,20 +13,9 @@ echo "PATH = \"$SECRET_PATH\"" >> "$temp_toml_file"
 echo "HOST = \"$SECRET_HOST\"" >> "$temp_toml_file"
 echo "TOKEN = \"$SECRET_TOKEN\"" >> "$temp_toml_file"
 # 添加多行字符串的值，不添加额外的双引号和空行
-echo 'ADDAPI = """' >> "$temp_toml_file"
-echo "$SECRET_ADDAPI" >> "$temp_toml_file"
-echo '"""' >> "$temp_toml_file"
-
-echo 'ADDCSV = """' >> "$temp_toml_file"
-echo "$SECRET_ADDCSV" >> "$temp_toml_file"
-echo '"""' >> "$temp_toml_file"
-
-echo 'ADD = """' >> "$temp_toml_file"
-echo "$SECRET_ADD" >> "$temp_toml_file"
-echo '"""' >> "$temp_toml_file"
-# 把 = """ 替换为 = (等号后面跟着一个空格及换行符)，并且移除所有的 """(后面跟着一个换行符)
-sed -i 's/= \"\"\"\n/= /g' "$temp_toml_file"
-sed -i 's/\"\"\"\n//g' "$temp_toml_file"
+echo "ADDAPI = $SECRET_ADDAPI" >> "$temp_toml_file"
+echo "ADDCSV = $SECRET_ADDCSV" >> "$temp_toml_file"
+echo "ADD = $SECRET_ADD" >> "$temp_toml_file"
 
 # ####Print out the contents of the modified TOML file for verification
 cat "$temp_toml_file"
