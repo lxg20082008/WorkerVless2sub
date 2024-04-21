@@ -11,9 +11,11 @@ cp wrangler.toml "$temp_toml_file"
 echo "UUID = \"$SECRET_UUID\"" >> "$temp_toml_file"
 echo "PATH = \"$SECRET_PATH\"" >> "$temp_toml_file"
 echo "HOST = \"$SECRET_HOST\"" >> "$temp_toml_file"
-echo "SUBAPI = \"$SECRET_SUBAPI\"" >> "$temp_toml_file"
+echo "TOKEN = \"$SECRET_TOKEN\"" >> "$temp_toml_file"
+echo "SUBNAME = \"$SECRET_SUBNAME\"" >> "$temp_toml_file"
+# echo "SUBAPI = \"$SECRET_SUBAPI\"" >> "$temp_toml_file"
 # echo "SUBCONFIG = \"$SECRET_SUBCONFIG\"" >> "$temp_toml_file"
-# echo "SUBNAME = \"$SECRET_SUBNAME\"" >> "$temp_toml_file"
+
 
 # 添加多行字符串的值，不添加额外的双引号和空行
 echo "ADDAPI = $SECRET_ADDAPI" >> "$temp_toml_file"
