@@ -43,7 +43,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: .
-          command: deploy _worker.js --config "${{env.temp_toml_file}}" --compatibility-date 2024-04-13 --name ${{ secrets.SCRIPT_NAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
+          command: deploy _worker.js --config "${{env.temp_toml_file}}" --compatibility-date 2024-04-13 --name ${{ secrets.SUBNAME }} # --compatibility-date ${{ steps.set_date.outputs.date }}
 
       - name: Remove Temporary File
         run: |
