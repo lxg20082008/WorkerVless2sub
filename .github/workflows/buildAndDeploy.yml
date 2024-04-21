@@ -19,15 +19,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # - name: Set Compatibility Date
+      #   id: set_date
+      #   run: echo "::set-output name=date::$(date +%Y-%m-%d)"
+
       - name: Set Script Executable
         run: |
           chmod +x rewrite_secrets.sh
 
       - name: Set Secrets as Environment Variables
         env:
-          SECRET_UUID: ${{ secrets.UUID }}
-          SECRET_PATH: ${{ secrets.PATH }} # 注意这里更改了变量名称
+          SECRET_UUID: ${{ secrets.UUID }} # 注意这里更改了变量名称
+          SECRET_PATH: ${{ secrets.PATH }}
           SECRET_HOST: ${{ secrets.HOST }}
+          SECRET_TOKEN: ${{ secrets.TOKEN }}
           SECRET_SUBNAME: ${{ secrets.SUBNAME }}
           SECRET_SUBAPI: ${{ secrets.SUBAPI }}
           SECRET_SUBCONFIG: ${{ secrets.SUBCONFIG }}
