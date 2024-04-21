@@ -28,7 +28,9 @@ jobs:
           SECRET_UUID: ${{ secrets.UUID }}
           SECRET_PATH: ${{ secrets.PATH }} # 注意这里更改了变量名称
           SECRET_HOST: ${{ secrets.HOST }}
-          SECRET_TOKEN: ${{ secrets.TOKEN }}
+          SECRET_SUBNAME: ${{ secrets.SUBNAME }}
+          SECRET_SUBAPI: ${{ secrets.SUBAPI }}
+          SECRET_SUBCONFIG: ${{ secrets.SUBCONFIG }}
           SECRET_ADDAPI: ${{ toJson(secrets.ADDAPI) }}
           SECRET_ADDCSV: ${{ toJson(secrets.ADDCSV) }}
           SECRET_ADD: ${{ toJson(secrets.ADD) }}
